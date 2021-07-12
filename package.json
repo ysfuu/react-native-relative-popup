@@ -34,7 +34,8 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "popup"
   ],
   "repository": "https://github.com/ysfuu/react-native-relative-popup",
   "author": "Yusuf YILDIZ <yusuf@jotform.com> (https://github.com/ysfuu)",
