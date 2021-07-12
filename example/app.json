@@ -1,0 +1,22 @@
+{
+  "name": "react-native-relative-popup-example",
+  "displayName": "RelativePopup Example",
+  "expo": {
+    "name": "react-native-relative-popup-example",
+    "slug": "react-native-relative-popup-example",
+    "description": "Example app for react-native-relative-popup",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
