@@ -1,19 +1,24 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import RelativePopup from 'react-native-relative-popup';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import Popup, { PopupProvider } from 'react-native-relative-popup';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    RelativePopup.multiply(3, 7).then(setResult);
-  }, []);
+  const [popupOpen, setPopupOpen] = React.useState<boolean>(false);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <PopupProvider>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.popupContainer}
+          onPress={() => setPopupOpen(true)}
+        >
+          <Popup isOpen={popupOpen} onClose={() => setPopupOpen(false)}>
+            <View style={styles.popup} />
+          </Popup>
+        </TouchableOpacity>
+      </View>
+    </PopupProvider>
   );
 }
 
@@ -23,9 +28,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
+  popupContainer: {
+    width: 100,
+    height: 100,
     marginVertical: 20,
+    backgroundColor: 'red',
+  },
+  popup: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'green',
   },
 });
