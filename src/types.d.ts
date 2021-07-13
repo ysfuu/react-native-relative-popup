@@ -4,17 +4,17 @@ export type PopupProps = {
   debug?: boolean;
 
   isOpen: boolean;
-  position?:
+  position:
     | 'top-left'
     | 'top-right'
     | 'top-center'
     | 'bottom-left'
     | 'bottom-right'
     | 'bottom-center';
-  horizontalSpacing?: number;
-  verticalSpacing?: number;
-  children: ReactChildren;
+  horizontalSpacing: number;
+  verticalSpacing: number;
+  children: ReactChildren | any;
 
   overlay?: boolean;
-  onClose?: Function;
-} & BottomSheetAnimationConfigs;
+  onClose?: Function | any;
+};

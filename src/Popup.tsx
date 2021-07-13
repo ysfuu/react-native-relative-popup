@@ -34,7 +34,7 @@ const Popup = ({
   const contentRef = useRef<View>(null);
   const [anchorLayout, setAnchorLayout] = useState(DEFAULT_LAYOUT);
   const [contentLayout, setContentLayout] = useState(DEFAULT_LAYOUT);
-  const [computedPosition, setComputedPosition] = useState(position);
+  const [computedPosition, setComputedPosition] = useState<string>(position);
 
   const handleAnchorLayout = useCallback(() => {
     if (anchorRef.current) {
