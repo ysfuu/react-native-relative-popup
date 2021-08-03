@@ -162,7 +162,7 @@ const Popup = ({
 
       case 'center':
         left =
-          (anchorLayout.x + anchorLayout.width) / 2 - contentLayout.width / 2;
+          anchorLayout.x + anchorLayout.width / 2 - contentLayout.width / 2;
         break;
 
       default:
