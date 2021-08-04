@@ -8,7 +8,7 @@ import React, {
 import { View, Pressable, useWindowDimensions, StyleSheet } from 'react-native';
 import { Portal } from '@gorhom/portal';
 
-import type { PopupProps } from './types';
+import type { PopupProps, PositionType } from './types';
 
 const DEFAULT_LAYOUT = {
   width: 0,
@@ -25,6 +25,7 @@ const Popup = ({
   horizontalSpacing,
   verticalSpacing,
   children,
+  safeAreaInsets,
 
   overlay,
   onClose,
@@ -34,7 +35,9 @@ const Popup = ({
   const contentRef = useRef<View>(null);
   const [anchorLayout, setAnchorLayout] = useState(DEFAULT_LAYOUT);
   const [contentLayout, setContentLayout] = useState(DEFAULT_LAYOUT);
-  const [computedPosition, setComputedPosition] = useState<string>(position);
+  const [computedPosition, setComputedPosition] = useState<
+    PositionType | string
+  >(position);
 
   const handleAnchorLayout = useCallback(() => {
     if (anchorRef.current) {
@@ -79,7 +82,10 @@ const Popup = ({
 
     switch (yAxis) {
       case 'top':
-        if (anchorLayout.y - contentLayout.height < 0) {
+        if (
+          anchorLayout.y - contentLayout.height <
+          0 + (safeAreaInsets.top || 0)
+        ) {
           yAxis = 'bottom';
         }
         break;
@@ -87,7 +93,7 @@ const Popup = ({
       case 'bottom':
         if (
           anchorLayout.y + anchorLayout.height + contentLayout.height >
-          dimensions.height
+          dimensions.height - (safeAreaInsets.bottom || 0)
         ) {
           yAxis = 'top';
         }
@@ -99,24 +105,35 @@ const Popup = ({
 
     switch (xAxis) {
       case 'left':
-        if (anchorLayout.x + contentLayout.width > dimensions.width) {
+        if (
+          anchorLayout.x + contentLayout.width >
+          dimensions.width - (safeAreaInsets.right || 0)
+        ) {
           xAxis = 'right';
         }
         break;
 
       case 'right':
-        if (anchorLayout.x + anchorLayout.width - contentLayout.width < 0) {
+        if (
+          anchorLayout.x + anchorLayout.width - contentLayout.width <
+          0 + (safeAreaInsets.left || 0)
+        ) {
           xAxis = 'left';
         }
         break;
 
       case 'center':
-        const centerPoint =
-          (anchorLayout.x + anchorLayout.width) / 2 - contentLayout.width;
-        if (centerPoint + contentLayout.width / 2 > dimensions.width) {
+        const centerPoint = anchorLayout.x + anchorLayout.width / 2;
+        if (
+          centerPoint + contentLayout.width / 2 >
+          dimensions.width - (safeAreaInsets.right || 0)
+        ) {
           xAxis = 'right';
         }
-        if (centerPoint - contentLayout.width / 2 < 0) {
+        if (
+          centerPoint - contentLayout.width / 2 <
+          0 + (safeAreaInsets.top || 0)
+        ) {
           xAxis = 'left';
         }
         break;
@@ -125,8 +142,18 @@ const Popup = ({
         break;
     }
 
-    setComputedPosition(`${yAxis}-${xAxis}`);
-  }, [position, anchorLayout, contentLayout, dimensions]);
+    const newPosition = `${yAxis}-${xAxis}`;
+    setComputedPosition(newPosition);
+  }, [
+    position,
+    anchorLayout,
+    contentLayout,
+    dimensions,
+    safeAreaInsets.top,
+    safeAreaInsets.bottom,
+    safeAreaInsets.right,
+    safeAreaInsets.left,
+  ]);
 
   const computedStyle = useMemo(() => {
     const [yAxis, xAxis] = computedPosition.split('-');
@@ -230,6 +257,12 @@ Popup.defaultProps = {
   position: 'bottom-right',
   horizontalSpacing: 0,
   verticalSpacing: 0,
+  safeAreaInsets: {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
   children: null,
   overlay: true,
   onClose: () => null,
