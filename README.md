@@ -59,6 +59,7 @@ export default () => {
 | position | 'top-left', 'top-right', 'top-center', 'bottom-left', 'bottom-right', 'bottom-center' | No | 'bottom-right' | Position of the popup |
 | horizontalSpacing | number | No | 0 | Horizontal spacing of the popup from the relative element |
 | verticalSpacing | number | No | 0 | Vertical spacing of the popup from the relative element |
+| safeAreaInsets | EdgeInsets | No | 0 | Safe area insets to use in positioning calculations. |
 | onClose | function | No | null | A callback that fired when user presses outside of the popup |
 
 
