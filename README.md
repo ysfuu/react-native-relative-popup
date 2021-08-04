@@ -7,6 +7,8 @@ A popup component that sticks to an element and stays on top of everything.
 - Fully customizable content
 - Built with Typescript
 
+![Relative Popup Demo](./assets/demo.gif)
+
 ## Usage
 
 ```sh
