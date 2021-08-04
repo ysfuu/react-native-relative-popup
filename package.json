@@ -1,6 +1,6 @@
 {
   "name": "react-native-relative-popup",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A popup component that sticks to an element and stays on top of everything.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
