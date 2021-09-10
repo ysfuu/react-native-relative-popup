@@ -1,12 +1,7 @@
 import * as React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
   SafeAreaView,
-} from 'react-native';
-import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
