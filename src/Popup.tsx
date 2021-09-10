@@ -5,7 +5,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, Pressable, useWindowDimensions, StyleSheet } from 'react-native';
+import {
+  View,
+  Pressable,
+  useWindowDimensions,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import { Portal } from '@gorhom/portal';
 
 import type { PopupProps, PositionType } from './types';
@@ -64,6 +70,20 @@ const Popup = ({
       });
     }
   }, [contentRef]);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const recalculateAnchorLayout = () => {
+      timer = setTimeout(handleAnchorLayout, 100);
+    };
+
+    Dimensions.addEventListener('change', recalculateAnchorLayout);
+
+    return () => {
+      Dimensions.removeEventListener('change', recalculateAnchorLayout);
+      clearTimeout(timer);
+    };
+  }, [handleAnchorLayout]);
 
   useEffect(() => {
     if (isOpen && anchorRef.current) {
