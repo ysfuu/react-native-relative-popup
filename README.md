@@ -7,6 +7,9 @@ A popup component that sticks to an element and stays on top of everything.
 - Fully customizable content
 - Built with Typescript
 
+## Demo
+[Expo Snack @jotform/react-native-relative-popup](https://snack.expo.dev/@jotform/react-native-relative-popup)
+
 <img src="./assets/demo.gif" alt="Relative Popup Demo" width="250" />
 
 ## Usage
