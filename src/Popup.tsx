@@ -16,6 +16,18 @@ import { Portal } from '@gorhom/portal';
 
 import type { PopupProps, PositionType } from './types';
 
+export function useIsMounted() {
+  const state = React.useRef(true);
+
+  React.useEffect(() => {
+    return () => {
+      state.current = false;
+    };
+  }, []);
+
+  return React.useCallback(() => state.current, []);
+}
+
 const DEFAULT_LAYOUT = {
   width: 0,
   height: 0,
@@ -35,6 +47,10 @@ const Popup = ({
 
   overlay,
   onClose,
+  portalName,
+  timeoutLength = 100,
+  // Allow customizing the `View` wrapping the popup content.
+  ...rest
 }: PopupProps) => {
   const dimensions = useWindowDimensions();
   const anchorRef = useRef<View>(null);
@@ -44,37 +60,50 @@ const Popup = ({
   const [computedPosition, setComputedPosition] = useState<
     PositionType | string
   >(position);
+  const isMounted = useIsMounted();
 
   const handleAnchorLayout = useCallback(() => {
     if (anchorRef.current) {
-      anchorRef.current.measureInWindow((x, y, width, height) => {
-        setAnchorLayout({
-          x,
-          y,
-          width,
-          height,
-        });
-      });
+      const timer = setTimeout(() => {
+        if (isMounted()) {
+          anchorRef.current!.measureInWindow((x, y, width, height) => {
+            setAnchorLayout({
+              x,
+              y,
+              width,
+              height,
+            });
+          });
+        }
+      }, timeoutLength);
+      return () => clearTimeout(timer);
     }
-  }, [anchorRef]);
+    return undefined;
+  }, [isMounted, timeoutLength]);
 
   const handleContentLayout = useCallback(() => {
     if (contentRef.current) {
-      contentRef.current.measureInWindow((x, y, width, height) => {
-        setContentLayout({
-          x,
-          y,
-          width,
-          height,
-        });
-      });
+      const timer = setTimeout(() => {
+        if (isMounted()) {
+          contentRef.current!.measureInWindow((x, y, width, height) => {
+            setContentLayout({
+              x,
+              y,
+              width,
+              height,
+            });
+          });
+        }
+      }, timeoutLength);
+      return () => clearTimeout(timer);
     }
-  }, [contentRef]);
+    return undefined;
+  }, [isMounted, timeoutLength]);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     const recalculateAnchorLayout = () => {
-      timer = setTimeout(handleAnchorLayout, 100);
+      timer = setTimeout(handleAnchorLayout, timeoutLength);
     };
 
     Dimensions.addEventListener('change', recalculateAnchorLayout);
@@ -83,7 +112,7 @@ const Popup = ({
       Dimensions.removeEventListener('change', recalculateAnchorLayout);
       clearTimeout(timer);
     };
-  }, [handleAnchorLayout]);
+  }, [handleAnchorLayout, timeoutLength]);
 
   useEffect(() => {
     if (isOpen && anchorRef.current) {
@@ -236,7 +265,7 @@ const Popup = ({
         style={[styles.anchor, debug && styles.anchorDebug]}
         pointerEvents="none"
       />
-      <Portal>
+      <Portal hostName={portalName}>
         {isOpen && (
           <>
             {overlay && (
@@ -253,6 +282,7 @@ const Popup = ({
                 debug && styles.contentDebug,
                 computedStyle,
               ]}
+              {...rest}
             >
               {typeof children === 'function'
                 ? children({
