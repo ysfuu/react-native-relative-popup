@@ -64,6 +64,9 @@ export default () => {
 | verticalSpacing | number | No | 0 | Vertical spacing of the popup from the relative element |
 | safeAreaInsets | EdgeInsets | No | 0 | Safe area insets to use in positioning calculations. |
 | onClose | function | No | null | A callback that fired when user presses outside of the popup |
+| portalName | string | No | undefined | Provide a `PortalHost` `name` to target if you need to customize the location of the popup content. |
+| timeoutLength | number | No | 100 | Customize the delay used when measuring the popup trigger and content elements. Can be useful if you experience jumping when the popup opens. |
+| ...rest | ViewProps | No | undefined | Any other props you pass will be applied to the `View` wrapping your popup content. |
 
 
 #### Usage
