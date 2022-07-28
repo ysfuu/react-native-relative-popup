@@ -65,7 +65,7 @@ const Popup = ({
   const handleAnchorLayout = useCallback(() => {
     if (anchorRef.current) {
       const timer = setTimeout(() => {
-        if (isMounted()) {
+        if (anchorRef.current && isMounted()) {
           anchorRef.current!.measureInWindow((x, y, width, height) => {
             setAnchorLayout({
               x,
@@ -84,7 +84,7 @@ const Popup = ({
   const handleContentLayout = useCallback(() => {
     if (contentRef.current) {
       const timer = setTimeout(() => {
-        if (isMounted()) {
+        if (anchorRef.current && isMounted()) {
           contentRef.current!.measureInWindow((x, y, width, height) => {
             setContentLayout({
               x,
